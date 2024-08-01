@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище FIAS_GARModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ADDR_OBJ">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="OBJECTID" Type="bigint" />
+          <Property Name="OBJECTGUID" Type="varchar(max)" />
+          <Property Name="CHANGEID" Type="bigint" />
+          <Property Name="NAME" Type="nvarchar(max)" />
+          <Property Name="TYPENAME" Type="nvarchar(max)" />
+          <Property Name="LEVEL" Type="int" />
+          <Property Name="OPERTYPEID" Type="int" />
+          <Property Name="PREVID" Type="int" />
+          <Property Name="NEXTID" Type="int" />
+          <Property Name="UPDATEDATE" Type="date" />
+          <Property Name="STARTDATE" Type="date" />
+          <Property Name="ENDDATE" Type="date" />
+          <Property Name="ISACTUAL" Type="int" />
+          <Property Name="ISACTIVE" Type="int" />
+        </EntityType>
+        <EntityType Name="AS_OBJECT_LEVELS">
+          <Key>
+            <PropertyRef Name="LEVEL" />
+          </Key>
+          <Property Name="LEVEL" Type="int" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="255" />
+          <Property Name="STARTDATE" Type="date" />
+          <Property Name="ENDDATE" Type="date" />
+          <Property Name="UPDATEDATE" Type="date" />
+          <Property Name="ISACTIVE" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_ADDR_OBJ_AS_OBJECT_LEVELS">
+          <End Role="AS_OBJECT_LEVELS" Type="Self.AS_OBJECT_LEVELS" Multiplicity="0..1" />
+          <End Role="ADDR_OBJ" Type="Self.ADDR_OBJ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AS_OBJECT_LEVELS">
+              <PropertyRef Name="LEVEL" />
+            </Principal>
+            <Dependent Role="ADDR_OBJ">
+              <PropertyRef Name="LEVEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище FIAS_GARModelContainer">
+          <EntitySet Name="ADDR_OBJ" EntityType="Self.ADDR_OBJ" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AS_OBJECT_LEVELS" EntityType="Self.AS_OBJECT_LEVELS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ADDR_OBJ_AS_OBJECT_LEVELS" Association="Self.FK_ADDR_OBJ_AS_OBJECT_LEVELS">
+            <End Role="AS_OBJECT_LEVELS" EntitySet="AS_OBJECT_LEVELS" />
+            <End Role="ADDR_OBJ" EntitySet="ADDR_OBJ" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FIAS_GARModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ADDR_OBJ">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="OBJECTID" Type="Int64" />
+          <Property Name="OBJECTGUID" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CHANGEID" Type="Int64" />
+          <Property Name="NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TYPENAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LEVEL" Type="Int32" />
+          <Property Name="OPERTYPEID" Type="Int32" />
+          <Property Name="PREVID" Type="Int32" />
+          <Property Name="NEXTID" Type="Int32" />
+          <Property Name="UPDATEDATE" Type="DateTime" Precision="0" />
+          <Property Name="STARTDATE" Type="DateTime" Precision="0" />
+          <Property Name="ENDDATE" Type="DateTime" Precision="0" />
+          <Property Name="ISACTUAL" Type="Int32" />
+          <Property Name="ISACTIVE" Type="Int32" />
+          <NavigationProperty Name="AS_OBJECT_LEVELS" Relationship="Self.FK_ADDR_OBJ_AS_OBJECT_LEVELS" FromRole="ADDR_OBJ" ToRole="AS_OBJECT_LEVELS" />
+        </EntityType>
+        <EntityType Name="AS_OBJECT_LEVELS">
+          <Key>
+            <PropertyRef Name="LEVEL" />
+          </Key>
+          <Property Name="LEVEL" Type="Int32" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="STARTDATE" Type="DateTime" Precision="0" />
+          <Property Name="ENDDATE" Type="DateTime" Precision="0" />
+          <Property Name="UPDATEDATE" Type="DateTime" Precision="0" />
+          <Property Name="ISACTIVE" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ADDR_OBJ" Relationship="Self.FK_ADDR_OBJ_AS_OBJECT_LEVELS" FromRole="AS_OBJECT_LEVELS" ToRole="ADDR_OBJ" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_ADDR_OBJ_AS_OBJECT_LEVELS">
+          <End Role="AS_OBJECT_LEVELS" Type="Self.AS_OBJECT_LEVELS" Multiplicity="0..1" />
+          <End Role="ADDR_OBJ" Type="Self.ADDR_OBJ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AS_OBJECT_LEVELS">
+              <PropertyRef Name="LEVEL" />
+            </Principal>
+            <Dependent Role="ADDR_OBJ">
+              <PropertyRef Name="LEVEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FIAS_GAREntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ADDR_OBJ" EntityType="Self.ADDR_OBJ" />
+          <EntitySet Name="AS_OBJECT_LEVELS" EntityType="Self.AS_OBJECT_LEVELS" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_ADDR_OBJ_AS_OBJECT_LEVELS" Association="Self.FK_ADDR_OBJ_AS_OBJECT_LEVELS">
+            <End Role="AS_OBJECT_LEVELS" EntitySet="AS_OBJECT_LEVELS" />
+            <End Role="ADDR_OBJ" EntitySet="ADDR_OBJ" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище FIAS_GARModelContainer" CdmEntityContainer="FIAS_GAREntities">
+          <EntitySetMapping Name="ADDR_OBJ">
+            <EntityTypeMapping TypeName="FIAS_GARModel.ADDR_OBJ">
+              <MappingFragment StoreEntitySet="ADDR_OBJ">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="OBJECTID" ColumnName="OBJECTID" />
+                <ScalarProperty Name="OBJECTGUID" ColumnName="OBJECTGUID" />
+                <ScalarProperty Name="CHANGEID" ColumnName="CHANGEID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="TYPENAME" ColumnName="TYPENAME" />
+                <ScalarProperty Name="LEVEL" ColumnName="LEVEL" />
+                <ScalarProperty Name="OPERTYPEID" ColumnName="OPERTYPEID" />
+                <ScalarProperty Name="PREVID" ColumnName="PREVID" />
+                <ScalarProperty Name="NEXTID" ColumnName="NEXTID" />
+                <ScalarProperty Name="UPDATEDATE" ColumnName="UPDATEDATE" />
+                <ScalarProperty Name="STARTDATE" ColumnName="STARTDATE" />
+                <ScalarProperty Name="ENDDATE" ColumnName="ENDDATE" />
+                <ScalarProperty Name="ISACTUAL" ColumnName="ISACTUAL" />
+                <ScalarProperty Name="ISACTIVE" ColumnName="ISACTIVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AS_OBJECT_LEVELS">
+            <EntityTypeMapping TypeName="FIAS_GARModel.AS_OBJECT_LEVELS">
+              <MappingFragment StoreEntitySet="AS_OBJECT_LEVELS">
+                <ScalarProperty Name="LEVEL" ColumnName="LEVEL" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="STARTDATE" ColumnName="STARTDATE" />
+                <ScalarProperty Name="ENDDATE" ColumnName="ENDDATE" />
+                <ScalarProperty Name="UPDATEDATE" ColumnName="UPDATEDATE" />
+                <ScalarProperty Name="ISACTIVE" ColumnName="ISACTIVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="FIAS_GARModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
