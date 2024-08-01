@@ -22,6 +22,7 @@ using Path = System.IO;
 using System.Reflection;
 using Xceed.Words.NET;
 using Xceed.Document.NET;
+using System.IO;
 
 namespace СитекWPF
 {
@@ -37,7 +38,7 @@ namespace СитекWPF
             DBCon.conObj = new FIAS_GAREntities();
 
             // Таймер
-            DispatcherTimer timer = new DispatcherTimer();         
+            DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(2);
             timer.Tick += LoadADDRTable; // Приявязка метода для заполнения таблицы
             timer.Start();
@@ -52,7 +53,7 @@ namespace СитекWPF
                 dateCombo.Items.Clear();
                 foreach (var date in fillquery)
                 {
-                    dateCombo.Items.Add(Convert.ToDateTime(date));                
+                    dateCombo.Items.Add(Convert.ToDateTime(date));
                 }
             }
             catch (Exception ex)
@@ -143,24 +144,32 @@ namespace СитекWPF
                 {
                     MessageBox.Show("Выберите дату!");
                 }
-                else 
+                else
                 {
                     string selectedDate = Convert.ToString(dateCombo.SelectedItem);
                     DateTime date = DateTime.Parse(selectedDate);
                     DateTime dateSort = DateTime.Parse(selectedDate);
                     GetLastDownloadFileInfo(date.ToString("dd-MM-yyyy"), dateSort);
                 }
-        }
+            }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
-}
+        }
 
         private void GetLastDownloadFileInfo(string date, DateTime dateSort) // Метод для сохранения отчёта
         {
             try
             {
+                if (Directory.Exists(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Reports")))
+                {
+
+                }
+                else
+                {
+                    Directory.CreateDirectory(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Reports"));
+                }
                 string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Reports\Report.docx");
                 DocX document = DocX.Create(filePath);
                 document.InsertParagraph($"Отчёт по добавленным адресным объектам за {date} \n —--------------------------------------")
@@ -181,7 +190,7 @@ namespace СитекWPF
                     // Получение наименований зданий
                     var getCountOfNames = from ad in DBCon.conObj.ADDR_OBJ
                                           join aso in DBCon.conObj.AS_OBJECT_LEVELS on ad.LEVEL equals aso.LEVEL
-                                          orderby ad.NAME ascending  
+                                          orderby ad.NAME ascending
                                           where ad.UPDATEDATE == dateSort && ad.ISACTIVE == 1 && aso.NAME == paragraphTitle
                                           select ad.NAME;
                     var distinctNames = getCountOfNames.Distinct().ToList();
